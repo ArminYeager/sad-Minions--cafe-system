@@ -1,0 +1,41 @@
+sequenceDiagram
+    participant UI as พนักงาน (POS)
+    participant API as OrderController
+    participant Model as Menu/Order Model
+    participant DB as ฐานข้อมูล
+
+    UI->>API: POST /api/orders (items, branchId, employeeId, paymentMethod)
+    
+    alt ข้อมูลนำเข้าไม่ถูกต้อง
+        API-->>UI: 400 Bad Request (Error message)
+    else ข้อมูลนำเข้าถูกต้อง
+        API->>API: รวมจำนวนของรายการที่เป็นเมนูเดียวกัน (quantityByMenuId)
+        API->>Model: findManyForStockCheck(menuIds, branchId)
+        Model->>DB: SELECT menu_id, price, stock_quantity FROM menu_item...
+        DB-->>Model: menuRows
+        Model-->>API: ข้อมูลสต็อกและราคา
+        
+        alt สต็อกไม่เพียงพอ
+            API-->>UI: 400 Bad Request (สต็อกไม่เพียงพอ)
+        else สต็อกเพียงพอ
+            API->>Model: create(branchId, employeeId, paymentMethod)
+            Model->>DB: INSERT INTO orders...
+            DB-->>Model: orderId
+            Model-->>API: orderId
+            
+            loop สำหรับสินค้าแต่ละรายการในออเดอร์
+                API->>Model: addItem(orderId, menuId, quantity, unitPrice)
+                Model->>DB: INSERT INTO order_item...
+                DB-->>Model: Success
+                Model-->>API: Success
+                
+                API->>Model: deductStock(menuId, quantity)
+                Model->>DB: UPDATE menu_item SET stock_quantity = stock_quantity - quantity...
+                DB-->>Model: Success
+                Model-->>API: Success
+            end
+            
+            API->>API: ตรวจสอบเมนูที่สต็อกต่ำกว่า 10 หลังตัดสต็อก
+            API-->>UI: 201 Created (orderId, lowStockMenuIds)
+        end
+    end
