@@ -1,0 +1,53 @@
+erDiagram
+    branch ||--o{ employee : "has"
+    branch ||--o{ menu_item : "has"
+    branch ||--o{ orders : "receives"
+    category ||--o{ menu_item : "categorizes"
+    employee ||--o{ orders : "manages"
+    orders ||--|{ order_item : "contains"
+    menu_item ||--o{ order_item : "is ordered in"
+    menu_item ||--o{ stock_movement : "has"
+
+    branch {
+        int branch_id PK
+        varchar name
+        varchar address
+    }
+    category {
+        int category_id PK
+        varchar name
+    }
+    employee {
+        int employee_id PK
+        int branch_id FK
+        varchar name
+        varchar role
+    }
+    menu_item {
+        int menu_id PK
+        int branch_id FK
+        int category_id FK
+        varchar name
+        decimal price
+        int stock_quantity
+    }
+    orders {
+        int order_id PK
+        int branch_id FK
+        int employee_id FK
+        varchar payment_method
+        datetime created_at
+    }
+    order_item {
+        int order_item_id PK
+        int order_id FK
+        int menu_id FK
+        int quantity
+        decimal unit_price
+    }
+    stock_movement {
+        int movement_id PK
+        int menu_id FK
+        int quantity_change
+        datetime moved_at
+    }
