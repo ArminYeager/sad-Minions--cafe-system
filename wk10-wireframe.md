@@ -1,4 +1,4 @@
-# WK10 Wireframe
+
 
 ## Mid-Fi Wireframe — ระบบร้านกาแฟ (Coffee Shop POS)
 
@@ -106,12 +106,6 @@ Wireframe นี้เป็นแบบ Mid-Fi สำหรับใช้เ�
 
 > Branch selector มีใน UI แล้ว แต่การเชื่อม branch_id กับ backend ยังเป็นงานที่ต้องเติมใน Coding Sprint 3
 
----
+# WK10 Wireframe
 
-## 7. ไฟล์ที่ใช้ส่งอาจารย์
-
-ไฟล์ DOCX ให้เก็บแยกจากไฟล์ที่ใช้ให้ Antigravity อ่าน:
-
-- `wk10-input-output-design.docx`
-- `wk10-wireframe.docx`
-- `wk10-ai-disclosure.md`
+![Wireframe](wk10-wireframe.png)

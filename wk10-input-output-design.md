@@ -1,4 +1,3 @@
-# WK10 Input / Output Design
 
 ## ระบบร้านกาแฟ (Coffee Shop POS)
 
@@ -23,6 +22,9 @@
 | รายการในตะกร้า | Table | ว่างก่อนเริ่ม | แสดงเมนู จำนวน ราคาต่อหน่วย และราคารวม |
 | วิธีชำระเงิน | Radio/Dropdown | ยังไม่เลือก | ต้องเลือกก่อนยืนยันออเดอร์ |
 | ยืนยันออเดอร์ | Button | Disabled | Enable เมื่อมีรายการและข้อมูลจำเป็นครบ |
+# WK10 Input / Output Design
+
+![Input / Output Design](wk10-input-output.png)
 
 ### 1.2 หลักการ Input ที่นำมาใช้
 

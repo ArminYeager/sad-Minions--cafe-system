@@ -1,0 +1,17 @@
+flowchart TB
+    subgraph ClientDevice["เครื่องลูกข่าย (Client Device - พนักงาน POS / เจ้าของร้าน)"]
+        Browser["เว็บเบราว์เซอร์ (Web Browser)<br/>HTML5, CSS3, JavaScript<br/>หน้าจอ: POS รับออเดอร์, จัดการเมนู, รายงานยอดขาย"]
+    end
+
+    subgraph DevelopmentHost["เครื่องคอมพิวเตอร์พัฒนา (เครื่องเดี่ยว / localhost)"]
+        subgraph AppNode["เซิร์ฟเวอร์แอปพลิเคชัน (Application Server - Node.js)"]
+            NodeServer["เว็บเซิร์ฟเวอร์ Node.js / Express<br/>(โพรเซสเดี่ยว พอร์ต 3000)<br/>- จัดการเส้นทาง Routing<br/>- ตรวจสอบความถูกต้องและตรรกะธุรกิจ<br/>- โมเดลเข้าถึงข้อมูล Data Access Models"]
+        end
+
+        subgraph DBNode["เซิร์ฟเวอร์ฐานข้อมูล (Database Server - MySQL)"]
+            MySQL[("เซิร์ฟเวอร์ฐานข้อมูล MySQL<br/>(เซอร์วิสรันที่พอร์ต 3306)<br/>ฐานข้อมูล: cafe_pos<br/>- คำสั่งซื้อและรายการ orders, order_item<br/>- เมนูและหมวดหมู่ menu_item, category<br/>- สาขา พนักงาน และการตัดสต็อก")]
+        end
+    end
+
+    Browser -->|"ส่งคำขอและตอบกลับ HTTP (JSON)<br/>http://localhost:3000"| NodeServer
+    NodeServer -->|"ส่งคำสั่ง SQL ผ่าน connection pool<br/>localhost:3306 (ผู้ใช้: root)"| MySQL
