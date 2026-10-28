@@ -1,0 +1,22 @@
+{
+  "name": "minions-cafe-pos",
+  "version": "1.0.0",
+  "description": "ระบบร้าน Minions Cafe - Point of Sale & Management System",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "pos",
+    "coffee-shop",
+    "minions-cafe",
+    "system-analysis"
+  ],
+  "author": "Group 14 - Minions Cafe",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.1"
+  }
+}

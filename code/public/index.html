@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minions Cafe - ระบบร้านกาแฟ POS & Management System (กลุ่ม 14)</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- TOP HEADER -->
+    <header class="top-header">
+        <div class="brand-section">
+            <div class="brand-logo">☕</div>
+            <div>
+                <div class="brand-title">MINIONS CAFE</div>
+                <div class="brand-subtitle">ระบบ POS & จัดการร้านกาแฟหลายสาขา (กลุ่ม 14)</div>
+            </div>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <nav class="nav-tabs">
+            <button class="nav-tab-btn active" id="tab-pos" onclick="switchScreen('pos')">
+                🛒 POS รับออเดอร์
+            </button>
+            <button class="nav-tab-btn" id="tab-menu" onclick="switchScreen('menu')">
+                📋 จัดการเมนู & สต็อก
+            </button>
+            <button class="nav-tab-btn" id="tab-report" onclick="switchScreen('report')">
+                📊 รายงานยอดขาย
+            </button>
+        </nav>
+
+        <!-- Header Controls (Branch & User) -->
+        <div class="header-controls">
+            <div class="branch-selector-wrap" title="เลือกสาขาเพื่อสลับข้อมูล (Consistency ตาม WK10)">
+                <label for="branch-select">📍 สาขา:</label>
+                <select id="branch-select" class="branch-select" onchange="onBranchChange()">
+                    <option value="1">สาขา 1 (สาขาหลัก - ม.บูรพา)</option>
+                    <option value="2">สาขา 2 (สาขาในเมือง - แหลมทอง)</option>
+                </select>
+            </div>
+            <div class="cashier-badge">
+                <span>👤</span>
+                <span id="cashier-name">สมชาย (Cashier)</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN APP CONTAINER -->
+    <main class="main-container">
+
+        <!-- ==========================================
+             SCREEN 1: POS RECEIVE ORDER (หน้า POS รับออเดอร์)
+             ========================================== -->
+        <section id="screen-pos" class="screen-view active">
+            <div class="pos-layout">
+                <!-- Left Menu Column -->
+                <div class="pos-menu-column">
+                    <!-- Filter & Search Toolbar -->
+                    <div class="filter-toolbar">
+                        <div class="search-box">
+                            <span class="search-icon">🔍</span>
+                            <input type="text" id="pos-search-input" class="search-input" placeholder="ค้นหาเมนูเครื่องดื่ม หรือขนม..." oninput="onSearchMenu(this.value)">
+                        </div>
+                        <div class="category-pills">
+                            <button class="cat-pill active" onclick="filterCategory('all', this)">ทั้งหมด</button>
+                            <button class="cat-pill" onclick="filterCategory(1, this)">☕ กาแฟ</button>
+                            <button class="cat-pill" onclick="filterCategory(2, this)">🍵 ชา</button>
+                            <button class="cat-pill" onclick="filterCategory(3, this)">🥐 เบเกอรี่</button>
+                        </div>
+                    </div>
+
+                    <!-- Menu Cards Grid -->
+                    <div id="menu-grid" class="menu-grid">
+                        <!-- Rendered dynamically by app.js -->
+                    </div>
+                </div>
+
+                <!-- Right Cart Panel -->
+                <aside class="pos-cart-panel">
+                    <div class="cart-header">
+                        <div class="cart-title">
+                            <span>🛍️</span>
+                            <span>ตะกร้าสินค้า</span>
+                        </div>
+                        <span id="cart-item-count" class="cart-badge">0 รายการ</span>
+                    </div>
+
+                    <!-- Cart Item List -->
+                    <div id="cart-body" class="cart-body">
+                        <div class="empty-cart-msg">
+                            🛒 ยังไม่มีรายการสินค้าในตะกร้า<br>
+                            <small>คลิกปุ่ม <b>+</b> ที่เมนูด้านซ้ายเพื่อเพิ่มรายการ</small>
+                        </div>
+                    </div>
+
+                    <!-- Payment Method Selector -->
+                    <div class="cart-payment-section">
+                        <label class="payment-label">วิธีชำระเงิน:</label>
+                        <div class="payment-options">
+                            <div class="payment-radio-card active" id="pay-cash-card" onclick="selectPaymentMethod('Cash')">
+                                <input type="radio" id="pay-cash" name="payment-method" value="Cash" checked>
+                                <label for="pay-cash" style="cursor:pointer">💵 เงินสด (Cash)</label>
+                            </div>
+                            <div class="payment-radio-card" id="pay-qr-card" onclick="selectPaymentMethod('QR')">
+                                <input type="radio" id="pay-qr" name="payment-method" value="QR">
+                                <label for="pay-qr" style="cursor:pointer">📱 QR พร้อมเพย์</label>
+                            </div>
+                        </div>
+
+                        <!-- Cash Input & Change Box -->
+                        <div id="cash-calc-box" class="cash-details-box">
+                            <div>
+                                <label style="font-size:0.75rem; color:#7c6f64; display:block">รับเงินสดมา (บาท):</label>
+                                <input type="number" id="cash-received-input" class="cash-input-field" placeholder="0.00" oninput="calculateChange()">
+                            </div>
+                            <div>
+                                <label style="font-size:0.75rem; color:#7c6f64; display:block">เงินทอน (บาท):</label>
+                                <div id="cash-change-display" style="font-size:1.1rem; font-weight:700; color:var(--success); padding-top:4px">฿0.00</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Cart Summary -->
+                    <div class="cart-summary">
+                        <div class="summary-row">
+                            <span>ยอดรวมสินค้า (Subtotal):</span>
+                            <span id="cart-subtotal">฿0.00</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>ภาษีมูลค่าเพิ่ม (VAT 0%):</span>
+                            <span>฿0.00</span>
+                        </div>
+                        <div class="summary-row total-row">
+                            <span>ยอดชำระสุทธิ:</span>
+                            <span id="cart-total">฿0.00</span>
+                        </div>
+                    </div>
+
+                    <!-- Cart Action Buttons -->
+                    <div class="cart-actions">
+                        <button class="btn-cancel-cart" onclick="clearCart()" title="ล้างรายการทั้งหมด">ยกเลิก</button>
+                        <button id="btn-confirm-order" class="btn-confirm-order" onclick="submitOrder()" disabled>
+                            <span>✓ ยืนยันออเดอร์</span>
+                        </button>
+                    </div>
+                </aside>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             SCREEN 2: MENU MANAGEMENT (หน้าจัดการเมนู & สต็อก)
+             ========================================== -->
+        <section id="screen-menu" class="screen-view">
+            <div class="page-header-box">
+                <div>
+                    <h2 class="page-title">จัดการรายการเมนูและสต็อกสินค้า</h2>
+                    <p style="color:#7c6f64; font-size:0.9rem">ตรวจสอบและปรับปรุงสต็อกวัตถุดิบและราคาสำหรับสาขาที่เลือก</p>
+                </div>
+                <button class="btn-primary" onclick="openAddMenuModal()">
+                    <span>+</span> เพิ่มเมนูใหม่
+                </button>
+            </div>
+
+            <!-- Table Container -->
+            <div class="data-table-container">
+                <table class="custom-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 70px">ID</th>
+                            <th style="width: 60px">รูป</th>
+                            <th>ชื่อเมนู</th>
+                            <th>หมวดหมู่</th>
+                            <th>ราคาต่อหน่วย</th>
+                            <th>สต็อกคงเหลือ</th>
+                            <th>สถานะสินค้า</th>
+                            <th style="text-align: right">การจัดการ</th>
+                        </tr>
+                    </thead>
+                    <tbody id="menu-table-body">
+                        <!-- Populated by app.js -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             SCREEN 3: SALES REPORT (หน้ารายงานยอดขาย)
+             ========================================== -->
+        <section id="screen-report" class="screen-view">
+            <div class="page-header-box">
+                <div>
+                    <h2 class="page-title">รายงานสรุปยอดขาย (Sales Summary Report)</h2>
+                    <p style="color:#7c6f64; font-size:0.9rem">ข้อมูลยอดขายแบบ On-demand ปรับปรุงแบบเรียลไทม์ทันทีที่มีออเดอร์ใหม่</p>
+                </div>
+                <div style="display:flex; gap:10px">
+                    <button class="btn-primary" style="background:#4b5563" onclick="exportReportCSV()">
+                        📥 ส่งออก CSV
+                    </button>
+                    <button class="btn-primary" onclick="window.print()">
+                        🖨 พิมพ์รายงาน
+                    </button>
+                </div>
+            </div>
+
+            <!-- KPI Cards Grid -->
+            <div class="kpi-cards-grid">
+                <div class="kpi-card">
+                    <div class="kpi-icon-wrap">💰</div>
+                    <div>
+                        <div class="kpi-val" id="kpi-total-sales">฿0.00</div>
+                        <div class="kpi-label">ยอดขายรวมสุทธิ</div>
+                    </div>
+                </div>
+
+                <div class="kpi-card">
+                    <div class="kpi-icon-wrap" style="background:#eff6ff; color:#2563eb">🧾</div>
+                    <div>
+                        <div class="kpi-val" id="kpi-total-orders">0</div>
+                        <div class="kpi-label">จำนวนออเดอร์ทั้งหมด</div>
+                    </div>
+                </div>
+
+                <div class="kpi-card">
+                    <div class="kpi-icon-wrap" style="background:#fefce8; color:#ca8a04">⭐</div>
+                    <div>
+                        <div class="kpi-val" id="kpi-best-seller" style="font-size:1.2rem">-</div>
+                        <div class="kpi-label">เมนูขายดีอันดับ 1</div>
+                    </div>
+                </div>
+
+                <div class="kpi-card">
+                    <div class="kpi-icon-wrap" style="background:#f0fdf4; color:#16a34a">☕</div>
+                    <div>
+                        <div class="kpi-val" id="kpi-total-cups">0</div>
+                        <div class="kpi-label">จำนวนแก้วที่จำหน่ายได้</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Two Column Report Breakdown -->
+            <div class="report-two-cols">
+                <!-- Left: Menu Breakdown Table -->
+                <div class="report-box">
+                    <div class="box-title">
+                        <span>📊 แจกแจงยอดขายตามเมนู</span>
+                        <span style="font-size:0.85rem; color:#7c6f64; font-weight:normal">เรียงตามยอดขายสูงสุด</span>
+                    </div>
+                    <table class="custom-table">
+                        <thead>
+                            <tr>
+                                <th>เมนู</th>
+                                <th>ราคา</th>
+                                <th>จำนวนที่ขายได้</th>
+                                <th>ยอดขายรวม</th>
+                            </tr>
+                        </thead>
+                        <tbody id="report-breakdown-body">
+                            <!-- Populated by app.js -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Right: Branch Comparison & Recent Transactions -->
+                <div style="display:flex; flex-direction:column; gap:20px">
+                    <div class="report-box">
+                        <div class="box-title">
+                            <span>🏢 เปรียบเทียบยอดขาย 2 สาขา</span>
+                        </div>
+                        <div class="branch-comparison-bar">
+                            <div style="display:flex; justify-content:space-between; font-weight:600; font-size:0.9rem; margin-bottom:4px">
+                                <span>สาขา 1 (ม.บูรพา)</span>
+                                <span id="comp-branch-1-sales">฿0.00</span>
+                            </div>
+                            <div style="background:#e2d9cd; height:10px; border-radius:5px; overflow:hidden">
+                                <div id="comp-branch-1-bar" style="background:var(--primary); height:100%; width:60%"></div>
+                            </div>
+                        </div>
+
+                        <div class="branch-comparison-bar">
+                            <div style="display:flex; justify-content:space-between; font-weight:600; font-size:0.9rem; margin-bottom:4px">
+                                <span>สาขา 2 (แหลมทอง)</span>
+                                <span id="comp-branch-2-sales">฿0.00</span>
+                            </div>
+                            <div style="background:#e2d9cd; height:10px; border-radius:5px; overflow:hidden">
+                                <div id="comp-branch-2-bar" style="background:var(--accent); height:100%; width:40%"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="report-box">
+                        <div class="box-title">
+                            <span>🕒 ประวัติออเดอร์ล่าสุด</span>
+                        </div>
+                        <div id="recent-orders-list" style="display:flex; flex-direction:column; gap:8px; max-height:220px; overflow-y:auto">
+                            <!-- Populated by app.js -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ==========================================
+         OFFICIAL RECEIPT MODAL (WK10 OUTPUT DESIGN)
+         ========================================== -->
+    <div id="receipt-modal" class="modal-backdrop">
+        <div class="modal-card">
+            <div id="receipt-printable-area" class="receipt-paper">
+                <div class="receipt-header">
+                    <div class="receipt-shop-name">MINIONS CAFE</div>
+                    <div style="font-size:0.75rem; color:#666">ระบบร้านกาแฟ สาขาคุณภาพ</div>
+                    <div class="receipt-divider"></div>
+                    <div style="font-weight:700">ใบเสร็จรับเงิน (RECEIPT)</div>
+                </div>
+
+                <div class="receipt-row" style="font-size:0.8rem">
+                    <span>สาขา:</span>
+                    <span id="rec-branch-name">สาขา 1 (สาขาหลัก)</span>
+                </div>
+                <div class="receipt-row" style="font-size:0.8rem">
+                    <span>เลขที่:</span>
+                    <span id="rec-order-no">ORD-20261028-001</span>
+                </div>
+                <div class="receipt-row" style="font-size:0.8rem">
+                    <span>วันที่:</span>
+                    <span id="rec-datetime">28/10/2026 16:30</span>
+                </div>
+                <div class="receipt-row" style="font-size:0.8rem">
+                    <span>พนักงาน:</span>
+                    <span id="rec-cashier">สมชาย</span>
+                </div>
+
+                <div class="receipt-divider"></div>
+
+                <table class="receipt-items-table">
+                    <thead>
+                        <tr>
+                            <th>รายการ</th>
+                            <th style="text-align:center">จำนวน</th>
+                            <th style="text-align:right">รวม</th>
+                        </tr>
+                    </thead>
+                    <tbody id="rec-items-body">
+                        <!-- Populated dynamically -->
+                    </tbody>
+                </table>
+
+                <div class="receipt-divider"></div>
+
+                <div class="receipt-row receipt-total-highlight">
+                    <span>ยอดรวมสุทธิ:</span>
+                    <span id="rec-total-amount">฿0.00</span>
+                </div>
+                <div class="receipt-row" style="font-size:0.82rem; margin-top:4px">
+                    <span>วิธีชำระเงิน:</span>
+                    <span id="rec-payment-method">เงินสด</span>
+                </div>
+                <div id="rec-cash-details-row" class="receipt-row" style="font-size:0.82rem">
+                    <span>รับเงินสด / เงินทอน:</span>
+                    <span id="rec-cash-change">฿0.00 / ฿0.00</span>
+                </div>
+
+                <div class="receipt-divider"></div>
+
+                <div class="receipt-footer-msg">
+                    *** ขอบคุณที่ใช้บริการ ***<br>
+                    MINIONS CAFE ยินดีต้อนรับเสมอ
+                </div>
+            </div>
+
+            <div class="modal-actions-bar">
+                <button class="table-action-btn" onclick="printReceiptArea()">🖨 พิมพ์ใบเสร็จ</button>
+                <button class="btn-primary" style="padding:6px 16px" onclick="closeReceiptModal()">ปิดหน้าต่าง</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         QR PAYMENT SIMULATION MODAL
+         ========================================== -->
+    <div id="qr-modal" class="modal-backdrop">
+        <div class="modal-card" style="text-align:center; padding:24px">
+            <h3 style="color:var(--primary); margin-bottom:6px">สแกนชำระเงิน QR PromptPay</h3>
+            <p style="font-size:0.85rem; color:#7c6f64; margin-bottom:16px">Minions Cafe PromptPay Bill Payment</p>
+            
+            <div style="background:#ffffff; border:2px solid var(--border); display:inline-block; padding:16px; border-radius:12px; margin-bottom:16px; box-shadow:var(--shadow-sm)">
+                <!-- SVG simulated QR Code -->
+                <svg width="180" height="180" viewBox="0 0 100 100">
+                    <rect width="100" height="100" fill="white"/>
+                    <rect x="10" y="10" width="25" height="25" fill="#1e1b18"/>
+                    <rect x="14" y="14" width="17" height="17" fill="white"/>
+                    <rect x="18" y="18" width="9" height="9" fill="#1e1b18"/>
+                    <rect x="65" y="10" width="25" height="25" fill="#1e1b18"/>
+                    <rect x="69" y="14" width="17" height="17" fill="white"/>
+                    <rect x="73" y="18" width="9" height="9" fill="#1e1b18"/>
+                    <rect x="10" y="65" width="25" height="25" fill="#1e1b18"/>
+                    <rect x="14" y="69" width="17" height="17" fill="white"/>
+                    <rect x="18" y="73" width="9" height="9" fill="#1e1b18"/>
+                    <rect x="42" y="12" width="6" height="6" fill="#d97706"/>
+                    <rect x="52" y="12" width="6" height="6" fill="#1e1b18"/>
+                    <rect x="42" y="24" width="6" height="6" fill="#1e1b18"/>
+                    <rect x="42" y="42" width="16" height="16" fill="#d97706"/>
+                    <rect x="65" y="45" width="8" height="8" fill="#1e1b18"/>
+                    <rect x="75" y="55" width="8" height="8" fill="#1e1b18"/>
+                    <rect x="45" y="70" width="8" height="8" fill="#1e1b18"/>
+                    <rect x="60" y="70" width="8" height="8" fill="#1e1b18"/>
+                    <rect x="75" y="75" width="12" height="12" fill="#1e1b18"/>
+                </svg>
+                <div id="qr-modal-amount" style="font-size:1.25rem; font-weight:700; color:var(--primary); margin-top:8px">฿0.00</div>
+            </div>
+
+            <div style="font-size:0.85rem; color:#64748b; margin-bottom:18px">
+                ⏳ รอการยืนยันการชำระเงินจากธนาคาร...
+            </div>
+
+            <div style="display:flex; justify-content:center; gap:10px">
+                <button class="table-action-btn" onclick="closeQrModal()">ยกเลิก</button>
+                <button class="btn-primary" style="background:var(--success)" onclick="confirmQrPaymentSuccess()">
+                    ✓ จำลองลูกค้าสแกนจ่ายสำเร็จ
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         QUICK STOCK ADJUST MODAL
+         ========================================== -->
+    <div id="stock-modal" class="modal-backdrop">
+        <div class="modal-card" style="padding:20px">
+            <h3 style="color:var(--primary); margin-bottom:12px">ปรับปรุงสต็อกสินค้า</h3>
+            <p id="stock-modal-item-name" style="font-weight:600; margin-bottom:14px">เมนู: -</p>
+            
+            <div style="margin-bottom:16px">
+                <label style="display:block; font-size:0.85rem; margin-bottom:6px; color:#5c4e43">จำนวนสต็อกใหม่ (หน่วย):</label>
+                <input type="number" id="stock-modal-input" class="search-input" min="0" value="10">
+            </div>
+
+            <div style="display:flex; justify-content:flex-end; gap:10px">
+                <button class="table-action-btn" onclick="closeStockModal()">ยกเลิก</button>
+                <button class="btn-primary" onclick="saveStockAdjustment()">บันทึกสต็อก</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         ADD MENU MODAL
+         ========================================== -->
+    <div id="add-menu-modal" class="modal-backdrop">
+        <div class="modal-card" style="padding:22px">
+            <h3 style="color:var(--primary); margin-bottom:16px">+ เพิ่มเมนูใหม่ประจำสาขา</h3>
+            
+            <div style="margin-bottom:12px">
+                <label style="display:block; font-size:0.85rem; margin-bottom:4px">ชื่อเมนู (ไทย / อังกฤษ):</label>
+                <input type="text" id="add-menu-name" class="search-input" placeholder="เช่น Caramel Macchiato">
+            </div>
+
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:12px">
+                <div>
+                    <label style="display:block; font-size:0.85rem; margin-bottom:4px">หมวดหมู่:</label>
+                    <select id="add-menu-category" class="search-input">
+                        <option value="1">☕ กาแฟ (Coffee)</option>
+                        <option value="2">🍵 ชา (Tea)</option>
+                        <option value="3">🥐 เบเกอรี่ (Bakery)</option>
+                    </select>
+                </div>
+                <div>
+                    <label style="display:block; font-size:0.85rem; margin-bottom:4px">ไอคอน:</label>
+                    <select id="add-menu-icon" class="search-input">
+                        <option value="☕">☕ กาแฟ</option>
+                        <option value="🍵">🍵 ชาเขียว</option>
+                        <option value="🧋">🧋 ชานม</option>
+                        <option value="🥐">🥐 ครัวซองต์</option>
+                        <option value="🍰">🍰 เค้ก</option>
+                    </select>
+                </div>
+            </div>
+
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:18px">
+                <div>
+                    <label style="display:block; font-size:0.85rem; margin-bottom:4px">ราคา (บาท):</label>
+                    <input type="number" id="add-menu-price" class="search-input" placeholder="45.00" min="0">
+                </div>
+                <div>
+                    <label style="display:block; font-size:0.85rem; margin-bottom:4px">สต็อกเริ่มต้น:</label>
+                    <input type="number" id="add-menu-stock" class="search-input" placeholder="15" min="0">
+                </div>
+            </div>
+
+            <div style="display:flex; justify-content:flex-end; gap:10px">
+                <button class="table-action-btn" onclick="closeAddMenuModal()">ยกเลิก</button>
+                <button class="btn-primary" onclick="submitNewMenu()">บันทึกเมนู</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         PRESENTATION CONTROLLER BAR (WK15 5-8 MIN LIVE DEMO)
+         ========================================== -->
+    <div class="demo-toolbar">
+        <div class="demo-title-tag">
+            <span>🎙️ แถบควบคุม Live Demo (สัปดาห์ที่ 15):</span>
+        </div>
+        <div class="demo-steps-group">
+            <button class="demo-step-btn" onclick="demoStep(1)" title="เปิดหน้าจอ POS แสดงรายการเมนู">
+                1️⃣ หน้า POS
+            </button>
+            <button class="demo-step-btn" onclick="demoStep(2)" title="เลือกเมนู 2-3 รายการ แสดงการคำนวณยอดรวมอัตโนมัติ">
+                2️⃣ สั่ง 2-3 เมนู (คำนวณสด)
+            </button>
+            <button class="demo-step-btn" onclick="demoStep(3)" title="ยืนยันออเดอร์ แสดงใบเสร็จที่ระบบสร้างขึ้น">
+                3️⃣ ยืนยัน & ดูใบเสร็จ
+            </button>
+            <button class="demo-step-btn" onclick="demoStep(4)" title="เปิดหน้ารายงานยอดขาย แสดงว่าออเดอร์เพิ่งทำปรากฏในรายงานทันที">
+                4️⃣ ดูรายงานทันที
+            </button>
+            <button class="demo-step-btn" onclick="demoStep(5)" title="สาธิตกรณีสต็อกไม่เพียงพอ เพื่อแสดง business logic ที่ออกแบบไว้">
+                5️⃣ ทดสอบสต็อกหมด (Error)
+            </button>
+            <button class="demo-reset-btn" onclick="demoResetData()" title="รีเซ็ตข้อมูลตัวอย่างกลับเป็นค่าเริ่มต้น">
+                🔄 รีเซ็ต Demo
+            </button>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION -->
+    <div id="toast" class="toast-box">ข้อความแจ้งเตือน</div>
+
+    <!-- APP SCRIPT -->
+    <script src="app.js"></script>
+</body>
+</html>
