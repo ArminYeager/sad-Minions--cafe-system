@@ -43,7 +43,7 @@ body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    padding-bottom: 75px; /* space for presentation bar */
+    padding-bottom: 20px;
 }
 
 /* ==========================================================================

@@ -496,33 +496,11 @@
         </div>
     </div>
 
-    <!-- ==========================================
-         PRESENTATION CONTROLLER BAR (WK15 5-8 MIN LIVE DEMO)
-         ========================================== -->
-    <div class="demo-toolbar">
-        <div class="demo-title-tag">
-            <span>🎙️ แถบควบคุม Live Demo (สัปดาห์ที่ 15):</span>
-        </div>
-        <div class="demo-steps-group">
-            <button class="demo-step-btn" onclick="demoStep(1)" title="เปิดหน้าจอ POS แสดงรายการเมนู">
-                1️⃣ หน้า POS
-            </button>
-            <button class="demo-step-btn" onclick="demoStep(2)" title="เลือกเมนู 2-3 รายการ แสดงการคำนวณยอดรวมอัตโนมัติ">
-                2️⃣ สั่ง 2-3 เมนู (คำนวณสด)
-            </button>
-            <button class="demo-step-btn" onclick="demoStep(3)" title="ยืนยันออเดอร์ แสดงใบเสร็จที่ระบบสร้างขึ้น">
-                3️⃣ ยืนยัน & ดูใบเสร็จ
-            </button>
-            <button class="demo-step-btn" onclick="demoStep(4)" title="เปิดหน้ารายงานยอดขาย แสดงว่าออเดอร์เพิ่งทำปรากฏในรายงานทันที">
-                4️⃣ ดูรายงานทันที
-            </button>
-            <button class="demo-step-btn" onclick="demoStep(5)" title="สาธิตกรณีสต็อกไม่เพียงพอ เพื่อแสดง business logic ที่ออกแบบไว้">
-                5️⃣ ทดสอบสต็อกหมด (Error)
-            </button>
-            <button class="demo-reset-btn" onclick="demoResetData()" title="รีเซ็ตข้อมูลตัวอย่างกลับเป็นค่าเริ่มต้น">
-                🔄 รีเซ็ต Demo
-            </button>
-        </div>
+    <!-- RESET BUTTON (เหลือไว้เฉพาะปุ่ม Reset) -->
+    <div style="position: fixed; bottom: 20px; right: 24px; z-index: 999;">
+        <button class="demo-reset-btn" onclick="demoResetData()" title="รีเซ็ตข้อมูลตัวอย่างกลับเป็นค่าเริ่มต้น" style="background: rgba(30, 27, 24, 0.92); border: 1.5px solid #ef4444; color: #fca5a5; padding: 8px 18px; border-radius: 20px; font-size: 0.88rem; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); display: flex; align-items: center; gap: 6px; cursor: pointer; transition: all 0.2s;">
+            🔄 รีเซ็ต Demo
+        </button>
     </div>
 
     <!-- TOAST NOTIFICATION -->
