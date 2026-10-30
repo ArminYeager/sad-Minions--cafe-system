@@ -7,13 +7,13 @@
 
 ## 👥 ข้อมูลกลุ่มและสมาชิก (กลุ่มที่ 14)
 
-| ลำดับ | รหัสนิสิต | ชื่อ - สกุล | บทบาทหน้าที่หลัก |
-|:---:|:---:|---|---|
-| 1 | **67160002** | นางสาวชาลิสา ศรีหงษ์ | Project Manager, System Analyst (wk01, wk02, wk15) |
-| 2 | **67160042** | นางสาวมนทกานต์ ปาลี | System Analyst & Requirements Engineer (wk03, wk10, wk13) |
-| 3 | **67160178** | นางสาวจตุพร ธรรมฤทธิ์ | Software Designer & UML Modeler (wk04, wk06, wk09) |
-| 4 | **67160190** | นางสาวบุษชยาภา คะสุดใจ | Database Designer & Backend Developer (wk07, wk11, wk14) |
-| 5 | **67160292** | นางสาวชนิดาภา ชาภักดี | UI/UX Designer & Frontend Developer (wk10, wk12, Demo App) |
+| ลำดับ |  รหัสนิสิต   | ชื่อ - สกุล            | บทบาทหน้าที่หลัก                                           |
+| :---: | :----------: | ---------------------- | ---------------------------------------------------------- |
+|   1   | **67160002** | นางสาวชาลิสา ศรีหงษ์   | Project Manager, System Analyst (wk01, wk02, wk15)         |
+|   2   | **67160042** | นางสาวมนทกานต์ ปาลี    | System Analyst & Requirements Engineer (wk03, wk10, wk13)  |
+|   3   | **67160178** | นางสาวจตุพร ธรรมฤทธิ์  | Software Designer & UML Modeler (wk04, wk06, wk09)         |
+|   4   | **67160190** | นางสาวบุษชยาภา คะสุดใจ | Database Designer & Backend Developer (wk07, wk11, wk14)   |
+|   5   | **67160392** | นางสาวชนิดาภา ชาภักดี  | UI/UX Designer & Frontend Developer (wk10, wk12, Demo App) |
 
 ---
 
@@ -22,15 +22,17 @@
 ผู้ตรวจสามารถคลิกลิงก์ด้านล่างเพื่อเข้าสู่เอกสารและไดอะแกรมแต่ละส่วนในโฟลเดอร์ `docs/` ได้ทันที:
 
 ### 📑 รายงานรวมเล่มโครงงาน (CLO4, CLO5, CLO6, CLO7)
-- 📄 **[รายงานรวมเล่มฉบับสมบูรณ์ (PDF)](docs/project-report.pdf)** *(ส่งตามเกณฑ์สัปดาห์ที่ 15)*
+
+- 📄 **[รายงานรวมเล่มฉบับสมบูรณ์ (PDF)](docs/project-report.pdf)** _(ส่งตามเกณฑ์สัปดาห์ที่ 15)_
 - 📝 **[รายงานรวมเล่มฉบับสมบูรณ์ (Word .docx)](docs/project-report.docx)**
 - 📋 **[รายงานรวมเล่มฉบับสมบูรณ์ (Markdown)](docs/project-report.md)**
 
 ### 📚 เอกสารส่งมอบรายสัปดาห์ (Weekly Deliverables wk01 - wk14)
+
 1. **สัปดาห์ที่ 1:** [Team Charter & Information System Analysis](docs/wk01-team-charter.md)
 2. **สัปดาห์ที่ 2:** [Feasibility Report & BPMN (As-Is / To-Be)](docs/wk02-feasibility-report.md)
    - ภาพประกอบ: [As-Is Process](docs/images/As-Is.jpg) | [To-Be Process](docs/images/to-be.png)
-3. **สัปดาห์ที่ 3:** [Requirements Analysis Document & Interview](docs/wk03-requirements.md) *(พร้อมบันทึกประวัติปรับปรุง FR-11 จาก Prototype)*
+3. **สัปดาห์ที่ 3:** [Requirements Analysis Document & Interview](docs/wk03-requirements.md) _(พร้อมบันทึกประวัติปรับปรุง FR-11 จาก Prototype)_
 4. **สัปดาห์ที่ 4:** [User Stories & Use Case Diagram](docs/wk04-user-stories.md)
    - ภาพประกอบ: [Use Case Diagram](docs/images/usecase-diagram.jpg)
 5. **สัปดาห์ที่ 6:** การออกแบบเชิงวัตถุ (OOAD)
@@ -43,13 +45,14 @@
 8. **สัปดาห์ที่ 10:** การออกแบบ Input/Output, UI และ Wireframe
    - เอกสาร: [Input / Output Design](docs/wk10-input-output-design.md) | [Wireframe Design](docs/wk10-wireframe.md)
    - ภาพประกอบ: [Input/Output Sample](docs/images/wk10-input-output.png) | [Wireframe Mid-Fi](docs/images/wk10-wireframe.png)
-   - 🌟 **[Software Requirements Specification (SRS ฉบับสมบูรณ์)](docs/wk10-srs.md)** *(หลักฐานสำคัญประเมิน CLO5)*
+   - 🌟 **[Software Requirements Specification (SRS ฉบับสมบูรณ์)](docs/wk10-srs.md)** _(หลักฐานสำคัญประเมิน CLO5)_
 9. **สัปดาห์ที่ 11:** [System Architecture (4+1 Architectural View Model)](docs/wk11-architecture.md)
    - ไดอะแกรม: [Physical View](docs/images/wk11-physical-view.png) | [Development View](docs/images/wk11-development-view.png)
 10. **สัปดาห์ที่ 12:** [Usability Testing Report (Task-Based & Think-Aloud)](docs/wk12-usability-testing.md)
-11. **สัปดาห์ที่ 14:** [Code Quality & Security Review Report](docs/wk14-quality-review.md) *(แก้ไข Race Condition ด้วย Transaction & FOR UPDATE)*
+11. **สัปดาห์ที่ 14:** [Code Quality & Security Review Report](docs/wk14-quality-review.md) _(แก้ไข Race Condition ด้วย Transaction & FOR UPDATE)_
 
 ### 🤖 ภาคผนวก: แบบฟอร์มเปิดเผยการใช้ AI (AI Disclosure Forms)
+
 - [AI Disclosure - สัปดาห์ที่ 5 (Git & Branching)](docs/ai-disclosure/wk05-ai-disclosure.md)
 - [AI Disclosure - สัปดาห์ที่ 9 (Sequence Diagram & API)](docs/ai-disclosure/wk09-ai-disclosure.md)
 - [AI Disclosure - สัปดาห์ที่ 10 (Input/Output & Wireframe)](docs/ai-disclosure/wk10-ai-disclosure.md)
@@ -62,6 +65,7 @@
 ระบบเว็บแอปพลิเคชัน Minions Cafe POS ออกแบบมาให้ทำงานได้จริง (Working Prototype) ตามหน้า Wireframe ในสัปดาห์ที่ 10 รองรับทั้งการรันผ่าน Node.js Express Server และการเปิดตรงบนเบราว์เซอร์
 
 ### วิธีที่ 1: รันผ่าน Node.js Express Server (แนะนำ)
+
 ```bash
 # 1. เข้าสู่โฟลเดอร์ code
 cd code
@@ -72,9 +76,11 @@ npm install
 # 3. เริ่มต้น Web Server
 npm start
 ```
+
 เปิดเบราว์เซอร์ไปที่ **`http://localhost:3000`**
 
 ### วิธีที่ 2: รันแบบ Standalone Client
+
 สามารถดับเบิลคลิกไฟล์ **`code/index.html`** เพื่อเปิดใช้งานบนเบราว์เซอร์ใดก็ได้ทันที (มีระบบจำลอง State และ LocalStorage ในตัว ทำงานได้สมบูรณ์ 100% แม้ไม่มีฐานข้อมูลภายนอก)
 
 ---

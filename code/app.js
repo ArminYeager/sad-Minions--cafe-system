@@ -359,7 +359,7 @@ function renderMenu() {
     if (isOutOfStock) {
       badgeHtml = `<span class="stock-badge out">✕ สินค้าหมด</span>`;
     } else if (isLowStock) {
-      badgeHtml = `<span class="stock-badge low">⚠ เหลือ ${item.stockQuantity} </span>`;
+      badgeHtml = `<span class="stock-badge low">⚠ เหลือ ${item.stockQuantity}</span>`;
     } else {
       badgeHtml = `<span class="stock-badge normal">✓ คงเหลือ ${item.stockQuantity}</span>`;
     }
@@ -728,7 +728,7 @@ function renderMenuManagement() {
     if (item.stockQuantity <= 0) {
       statusTag = `<span class="stock-badge out">✕ สินค้าหมด</span>`;
     } else if (item.stockQuantity < 10) {
-      statusTag = `<span class="stock-badge low">⚠ ต่ำกว่าเกณฑ์ (${item.stockQuantity})</span>`;
+      statusTag = `<span class="stock-badge low">⚠ เหลือ ${item.stockQuantity}</span>`;
     } else {
       statusTag = `<span class="stock-badge normal">✓ ปกติ (${item.stockQuantity})</span>`;
     }
