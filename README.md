@@ -10,7 +10,7 @@
 | ลำดับ |  รหัสนิสิต   | ชื่อ - สกุล            | บทบาทหน้าที่หลัก                                           |
 | :---: | :----------: | ---------------------- | ---------------------------------------------------------- |
 |   1   | **67160002** | นางสาวชาลิสา ศรีหงษ์   | Project Manager, System Analyst (wk01, wk02, wk15)         |
-|   2   | **67160042** | นางสาวมนทกานต์ ปาลี    | System Analyst & Requirements Engineer (wk03, wk10, wk13)  |
+|   2   | **67160042** | นางสาวมนทกานต์ ปาลี    | Project Lead & Requirements Engineer (wk03, wk10, wk13)    |
 |   3   | **67160178** | นางสาวจตุพร ธรรมฤทธิ์  | Software Designer & UML Modeler (wk04, wk06, wk09)         |
 |   4   | **67160190** | นางสาวบุษชยาภา คะสุดใจ | Database Designer & Backend Developer (wk07, wk11, wk14)   |
 |   5   | **67160392** | นางสาวชนิดาภา ชาภักดี  | UI/UX Designer & Frontend Developer (wk10, wk12, Demo App) |
